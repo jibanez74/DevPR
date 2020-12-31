@@ -1,0 +1,11 @@
+{
+  "auth": {},
+  "function": {
+    "users": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "api": {}
+}

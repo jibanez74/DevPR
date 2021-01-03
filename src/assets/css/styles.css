@@ -1,0 +1,11 @@
+@import './bootstrap-reboot.css';
+@import './bootstrap.css';
+
+.btn-secondary {
+  color: #fff !important;
+}
+
+.navbar {
+  opacity: 0.9;
+  text-transform: uppercase;
+}

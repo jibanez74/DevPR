@@ -1,5 +1,12 @@
 {
-  "auth": {},
+  "auth": {
+    "devpr6b960da8": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
   "function": {
     "users": {
       "build": true,

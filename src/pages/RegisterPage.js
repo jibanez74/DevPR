@@ -10,9 +10,11 @@ import {
   Form,
   Modal,
   Row,
+  Card,
 } from 'react-bootstrap';
 import Message from '../components/Message';
 import { Link } from 'react-router-dom';
+import PageHeader from '../components/PageHeader';
 
 function RegisterPage({ history }) {
   const [name, setName] = useState('');
@@ -45,115 +47,92 @@ function RegisterPage({ history }) {
 
   return (
     <>
-      <section className="login-section">
-        <Container>
-          <Row>
-            <Col md={8} lg={6} className="m-auto">
-              <h1 className="text-center">Create Account</h1>
-              {loading && <Loader />}
-              {error && <Message variant="danger">{error}</Message>}
+      <PageHeader
+        title="Create an Account"
+        msg="You can sign up by filling the form below or by using a social provider."
+      />
 
-              <Form onSubmit={submitHandler}>
-                <Form.Group controlId="name">
-                  <Form.Label>Full Name</Form.Label>
-                  <Form.Control
-                    type="name"
-                    autoFocus
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    required
-                    minLength="2"
-                    maxLength="60"
-                  ></Form.Control>
-                </Form.Group>
+      <section className="register-section">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-8">
+              <div className="card p-4">
+                <div className="card-body">
+                  <h3>All fields are required</h3>
 
-                <Form.Group controlId="email">
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                  ></Form.Control>
-                </Form.Group>
+                  <hr />
 
-                <Form.Group controlId="password">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    required
-                    minLength="8"
-                    maxLength="128"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                  ></Form.Control>
-                </Form.Group>
+                  <form onSubmit={submitHandler}>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="firstName"
+                          name="firstName"
+                          value={firstName}
+                          onChange={e => setFirstName(e.target.value)}
+                          required
+                          maxLength="40"
+                          placeholder="Enter your first name"
+                        />
+                      </div>
+                    </div>
 
-                <Form.Group controlId="confirmPassword">
-                  <Form.Label>Confirm Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    required
-                    minLength="8"
-                    maxLength="128"
-                    value={password2}
-                    onChange={e => setPassword2(e.target.value)}
-                  ></Form.Control>
-                </Form.Group>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          name="lastName"
+                          value={lastName}
+                          onChange={e => setLastName(e.target.value)}
+                          required
+                          maxLength="40"
+                          placeholder="Enter your last name"
+                        />
+                      </div>
+                    </div>
 
-                <Button type="submit" variant="info">
-                  Register
-                </Button>
-              </Form>
-            </Col>
-          </Row>
+                    <div className="col-md-12">
+                      <div className="form-group">
+                        <input
+                          type="email"
+                          className="form-control"
+                          id="email"
+                          name="email"
+                          value={email}
+                          onChange={e => setEmail(e.target.value)}
+                          required
+                          placeholder="Enter your email address"
+                        />
+                      </div>
+                    </div>
 
-          <Row>
-            <Col>
-              <ButtonGroup aria-label="options">
-                <Button type="button" variant="link">
-                  Did not get a confirmation code
-                </Button>
-                <Link to="/login" vairant="link">
-                  Already have an account
-                </Link>
-              </ButtonGroup>
-            </Col>
-          </Row>
-        </Container>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <input
+                          type="password"
+                          className="form-control"
+                          id="password"
+                          name="password"
+                          value={password}
+                          onChange={e => setPassword(e.target.value)}
+                          required
+                          minLength="8"
+                          maxLength="128"
+                          placeholder="Enter your new password"
+                        />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-
-      <Modal
-        backdrop="static"
-        keyboard={false}
-        show={showModal}
-        onHide={handleClose}
-        centered
-        aria-labelledby="Modal activar email"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="text-center">
-            Resend Confirmation Code
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.body>
-          <Form onSubmit={emailConfirmHandler}>
-            <Form.Group controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              ></Form.Control>
-            </Form.Group>
-
-            <Button type="submit" variant="primary">
-              Enviar Email
-            </Button>
-          </Form>
-        </Modal.body>
-      </Modal>
     </>
   );
 }

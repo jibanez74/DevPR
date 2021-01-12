@@ -1,11 +1,32 @@
-@import './bootstrap-reboot.css';
-@import './bootstrap.css';
+@import './bootstrap-reboot.min.css';
+@import './bootstrap.min.css';
 
-.btn-secondary {
-  color: #fff !important;
+body {
+  overflow-x: hidden;
 }
 
-.navbar {
-  opacity: 0.9;
+.links {
+  font-size: 14px;
   text-transform: uppercase;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.slider-item {
+  height: 450px;
+}
+
+.carousel-image-1 {
+  background: url('../img/carousel1.jpg');
+  background-size: cover;
+}
+
+.carousel-image-2 {
+  background: url('../img/carousel2.jpg');
+  background-size: cover;
+}
+
+.carousel-image-3 {
+  background: url('../img/carousel3.jpg');
+  background-size: cover;
 }

@@ -12,7 +12,7 @@ function AppBar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             <LinkContainer to="/login">
-              <Nav.Link>
+              <Nav.Link className="links">
                 <i className="fas fa-user"></i> Sign In
               </Nav.Link>
             </LinkContainer>

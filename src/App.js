@@ -1,9 +1,9 @@
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import AppBar from './components/AppBar';
-import RegisterPage from './pages/RegisterPage';
-import LoginPage from './pages/LoginPage';
-import LandingPage from './pages/LandingPage';
+import AppBar from './components/layouts/AppBar';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import Landing from './components/Landing';
 
 function App() {
   return (
@@ -12,9 +12,9 @@ function App() {
         <AppBar />
       </header>
       <main>
-        <Route exact path="/register" component={RegisterPage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/" component={LandingPage} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/" component={Landing} />
       </main>
     </BrowserRouter>
   );

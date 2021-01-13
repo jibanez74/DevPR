@@ -68,7 +68,7 @@
         "Layers": [],
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-devpr-dev-235708-deployment",
+          "S3Bucket": "amplify-devpr-sampledev-185343-deployment",
           "S3Key": "amplify-builds/users-4f2b36426c395031765a-build.zip"
         }
       }

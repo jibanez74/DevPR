@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import AppBar from './components/layouts/AppBar';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import Landing from './components/Landing';
+import Landing from './components/landing/Landing';
 
 function App() {
   return (

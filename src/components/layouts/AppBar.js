@@ -16,6 +16,11 @@ function AppBar() {
                 <i className="fas fa-user"></i> Sign In
               </Nav.Link>
             </LinkContainer>
+            <LinkContainer to="/register">
+              <Nav.Link className="links">
+                <i className="fas fa-user"></i> Register
+              </Nav.Link>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Container>

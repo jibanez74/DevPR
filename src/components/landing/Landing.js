@@ -1,14 +1,14 @@
 import LandingInfo from './LandingInfo';
 import LandingCarousel from './LandingCarousel';
-import LandingIcons './LandingIcons'
+import LandingIcons from './LandingIcons'
 
 function LandingPage() {
   return (
     <>
       <LandingCarousel />
       <LandingIcons />
+      <LandingInfo />
     </>
-      <LandingInfo />>
   );
 }
 

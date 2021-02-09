@@ -1,9 +1,22 @@
-import { useState } from 'react';
-import PageHeader from '../layouts/PageHeader';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PageHeader from '../layouts/PageHeader';
+import SocialProviders from './SocialProviders';
+import Message from '../layouts/Message';
+import Loader from '../layouts/Loader';
+import {
+  Modal,
+  Card,
+  Container,
+  Row,
+  Col,
+  Button,
+  Form,
+} from 'react-bootstrap';
+import { Auth } from 'aws-amplify';
+import { useSelector } from 'react-redux';
 
 function Register({ history }) {
-  const welcomeTitle = 'Create Account';
   const welcomeText =
     'You can sign up with your email and password, or by using a social provider.';
 
@@ -11,116 +24,173 @@ function Register({ history }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  const submitHandler = e => {
+  const userLogin = useSelector(state => state.userLogin);
+  const { user } = userLogin;
+
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
+
+  useEffect(() => {
+    if (user) {
+      history.push('/dashboard');
+    }
+  });
+
+  const registerHandler = async e => {
     e.preventDefault();
+
+    setLoading(true);
+    setMessage('');
+
+    if (password !== password2) {
+      setMessage('Passwords do not match');
+      setLoading(false);
+    } else {
+      try {
+        await Auth.signUp({
+          username: email,
+          password,
+          attributes: {
+            name,
+          },
+        });
+
+        history.push(`/confirm/${email}`);
+      } catch (error) {
+        setMessage(error.message);
+        setLoading(false);
+      }
+    }
   };
 
-  const forgotPasswordHandler = () => {
-    alert('Forgot password is in development');
+  const resendConfirmationHandler = async e => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await Auth.resendSignUp(email);
+      history.push(`/confirm/${email}`);
+    } catch (error) {
+      setMessage(error.message);
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      <PageHeader msg={welcomeText} title={welcomeText} />
+      {loading && <Loader />}
+      <PageHeader title="Create Account" msg={welcomeText} />
+      <section className="auth-section py-3">
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col md={8} lg={6}>
+              <Card body className="p-4">
+                <SocialProviders />
+                <hr />
+                <Form onSubmit={registerHandler}>
+                  <Form.Group controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      required
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
 
-      <section className="register-section py-3 mt-4">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <div className="card p-4">
-                <div className="card-header">
-                  <button type="button" className="btn btn-block btn-danger">
-                    Login using google
-                  </button>
-                  <button type="button" className="btn btn-block btn-warning">
-                    Login with Twitter
-                  </button>
-                  <button type="button" className="btn btn-block btn-info">
-                    Login with Facebook
-                  </button>
-                </div>
-                <div className="card-body">
-                  <h3 className="text-center">Sign up</h3>
-                  <hr />
+                  <Form.Group controlId="name">
+                    <Form.Label>Full name</Form.Label>
+                    <Form.Control
+                      type="name"
+                      required
+                      minLength="2"
+                      maxLength="60"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="password">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      required
+                      minLength="8"
+                      maxLength="128"
+                      value={password}
+                      onChange={e => setPassword(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="password2">
+                    <Form.Label>Confirm password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      required
+                      minLength="8"
+                      maxLength="128"
+                      value={password2}
+                      onChange={e => setPassword2(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
+                  {message && <Message variant="danger">{message}</Message>}
+                  <Button variant="info" type="submit" block className="mt-4">
+                    Register
+                  </Button>
+                </Form>
 
-                  <form onSubmit={submitHandler}>
-                    <div className="form-group">
-                      <input
-                        type="name"
-                        className="form-control"
-                        id="name"
-                        name="name"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                        placeholder="Full name"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        name="email"
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
-                        required
-                        placeholder="Email"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        name="password"
-                        required
-                        minLength="8"
-                        maxLength="128"
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="password2"
-                        name="password2"
-                        value={password2}
-                        onChange={e => setPassword2(e.target.value)}
-                        required
-                        minLength="8"
-                        maxLength="128"
-                        placeholder="Retype your password"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="btn btn-block btn-outline-info"
-                    >
-                      sign up
-                    </button>
-                  </form>
-                </div>
-                <div className="card-footer">
-                  <Link className="btn btn-link" to="/login">
-                    Already have an account
-                  </Link>
-                  <button
-                    onClick={forgotPasswordHandler}
-                    type="button"
-                    className="btn btn-link"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                <Button
+                type="button"
+                variant="link"
+                  className="text-center mt-3"
+                  onClick={handleShow}
+                >
+                  Resend confirmation code
+                </Button>
+                <Link to="/login" className="text-center btn btn-link">
+                  I already have an account
+                </Link>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
       </section>
+
+      <Modal
+        backdrop="static"
+        keyboard={false}
+        show={showModal}
+        onHide={handleClose}
+        centered
+        aria-labelledby="Resend Confirmation Code modal"
+      >
+        <Modal.Header className={'text-center'} closeButton>
+          <Modal.Title>Resend Confirmation Code</Modal.Title>
+          {message && (
+            <p className={'text-danger'} role={'alert'}>
+              {message}
+            </p>
+          )}
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={resendConfirmationHandler}>
+            <Form.Group controlId="confirm-email">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Button type={'submit'} variant={'info'} block className={'m-3'}>
+              Send Code
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }

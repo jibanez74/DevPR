@@ -30,3 +30,24 @@ body {
   background: url('../img/carousel3.jpg');
   background-size: cover;
 }
+
+.page-header {
+  height: 200px;
+  background: url('../img/carousel1.jpg');
+  background-position: 0 -360px;
+  background-attachment: fixed;
+  color: #fff;
+  border-bottom: 1px #eee solid;
+  padding-top: 50px;
+}
+
+.loader {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  display: block;
+}
+
+.auth-section {
+  margin-top: 2rem;
+}

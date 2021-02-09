@@ -40,7 +40,7 @@ function LandingInfo() {
             </div>
 
             <div className="col-md-6">
-              <img src={laptop} alt="image of a laptop" className="img-fluid" />
+              <img src={laptop} alt="" className="img-fluid" />
             </div>
           </div>
         </div>

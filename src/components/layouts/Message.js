@@ -1,10 +1,7 @@
+import { Alert } from 'react-bootstrap';
+
 function Message({ variant, children }) {
-  const styles = `alert alert-${variant}`
-  return(
-    <div className={styles} role="alert">
-      {children}
-    </div>
-  )
+  return <Alert variant={variant}>{children}</Alert>;
 }
 
 Message.defaultProps = {

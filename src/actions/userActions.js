@@ -1,5 +1,6 @@
 import { Auth } from 'aws-amplify';
 import {
+  USER_LOGOUT,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
@@ -12,11 +13,14 @@ export const classicLogin = (username, password) => async dispatch => {
       type: USER_LOGIN_REQUEST,
     });
 
-    const response = await Auth.signIn(username, password);
+    await Auth.signIn(username, password);
+    const user = await Auth.currentAuthenticatedUser();
+
+    console.log(user);
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-      payload: response,
+      payload: user,
     });
   } catch (error) {
     console.error(error);
@@ -29,6 +33,36 @@ export const classicLogin = (username, password) => async dispatch => {
 };
 
 // user logout
-export const logout = async () => {
+export const logout = () => async dispatch => {
   await Auth.signOut();
+  dispatch({
+    type: USER_LOGOUT,
+  });
+  document.location.href = '/login';
+};
+
+// get current auth user
+export const getAuthUser = () => async dispatch => {
+  dispatch({
+    type: USER_LOGIN_REQUEST,
+  });
+
+  try {
+    await Auth.currentSession();
+    const user = await Auth.currentAuthenticatedUser();
+
+    console.log(user);
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: user,
+    });
+  } catch (error) {
+    console.log(error);
+
+    dispatch({
+      type: USER_LOGIN_FAIL,
+      payload: error.message,
+    });
+  }
 };

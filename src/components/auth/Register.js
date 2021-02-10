@@ -44,7 +44,6 @@ function Register({ history }) {
     e.preventDefault();
 
     setLoading(true);
-    setMessage('');
 
     if (password !== password2) {
       setMessage('Passwords do not match');
@@ -142,8 +141,8 @@ function Register({ history }) {
                 </Form>
 
                 <Button
-                type="button"
-                variant="link"
+                  type="button"
+                  variant="link"
                   className="text-center mt-3"
                   onClick={handleShow}
                 >

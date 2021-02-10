@@ -47,7 +47,7 @@ function Login({ history }) {
 
     try {
       await Auth.forgotPassword(email);
-      history.push('/forgot-password');
+      history.push(`/reset-password/${email}`);
     } catch (error) {
       setMessage(error.message);
     }

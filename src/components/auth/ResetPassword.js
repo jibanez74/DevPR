@@ -34,7 +34,10 @@ function ResetPassword({ history, match }) {
   return (
     <>
       {loading && <Loader />}
-      <PageHeader title={'Confirm'} msg={'Enter your confirmation code'} />
+      <PageHeader
+        title={'Reset Password'}
+        msg="Enter the code that was email to you and a new password"
+      />
       <section className={'auth-section py-3'}>
         <Container>
           <Row className={'justify-content-center'}>
@@ -63,11 +66,23 @@ function ResetPassword({ history, match }) {
                       onChange={e => setPassword(e.target.value)}
                     ></Form.Control>
                   </Form.Group>
+                  <Form.Group controlId="password2">
+                    <Form.Label>Confirm new password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      required
+                      minLength="8"
+                      maxLength="128"
+                      onChange={e => setPassword2(e.target.value)}
+                      value={password2}
+                    ></Form.Control>
+                  </Form.Group>
                   {message && <Message variant={'danger'}>{message}</Message>}
+
                   <Button type="submit" variant="info" block className={'m-3'}>
                     Submit
                   </Button>
-                </Form.Label>
+                </Form>
               </Card>
             </Col>
           </Row>
@@ -77,4 +92,4 @@ function ResetPassword({ history, match }) {
   );
 }
 
-export default ConfirmScreen;
+export default ResetPassword;

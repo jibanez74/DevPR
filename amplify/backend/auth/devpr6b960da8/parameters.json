@@ -1,6 +1,6 @@
 {
     "identityPoolName": "devpr6b960da8_identitypool_6b960da8",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "devpr6b960da8",
     "userPoolName": "devpr6b960da8_userpool_6b960da8",
     "autoVerifiedAttributes": [

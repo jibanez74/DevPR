@@ -33,12 +33,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "users",
+            "profile",
             {
               "Fn::Join": [
                 "",
                 [
-                  "users",
+                  "profile",
                   "-",
                   {
                     "Ref": "env"
@@ -69,7 +69,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-devpr-dev-235708-deployment",
-          "S3Key": "amplify-builds/users-4f2b36426c395031765a-build.zip"
+          "S3Key": "amplify-builds/profile-48716f73596d554e742f-build.zip"
         }
       }
     },
@@ -79,12 +79,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "devprLambdaRoleae7614eb",
+            "devprLambdaRoleb56760fb",
             {
               "Fn::Join": [
                 "",
                 [
-                  "devprLambdaRoleae7614eb",
+                  "devprLambdaRoleb56760fb",
                   "-",
                   {
                     "Ref": "env"

@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/profiles",
+            "lambdaFunction": "profiles",
+            "privacy": {
+                "open": true
+            },
+            "policyResourceName": "/profiles"
+        }
+    ],
+    "resourceName": "profiles",
+    "apiName": "profiles",
+    "functionArns": [
+        {
+            "lambdaFunction": "profiles"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-devpr-dev-235708-authRole",
+        "unAuthRoleName": "amplify-devpr-dev-235708-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "profiles",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

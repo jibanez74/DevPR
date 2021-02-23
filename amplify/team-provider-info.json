@@ -14,6 +14,16 @@
     "categories": {
       "auth": {
         "devpr6b960da8": {}
+      },
+      "function": {
+        "profiles": {
+          "deploymentBucketName": "amplify-devpr-dev-235708-deployment",
+          "s3Key": "amplify-builds/profiles-52676358596478766355-build.zip"
+        },
+        "posts": {
+          "deploymentBucketName": "amplify-devpr-dev-235708-deployment",
+          "s3Key": "amplify-builds/posts-74435a467a51706b7054-build.zip"
+        }
       }
     }
   }

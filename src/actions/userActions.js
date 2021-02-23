@@ -51,15 +51,11 @@ export const getAuthUser = () => async dispatch => {
     await Auth.currentSession();
     const user = await Auth.currentAuthenticatedUser();
 
-    console.log(user);
-
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: user,
     });
   } catch (error) {
-    console.log(error);
-
     dispatch({
       type: USER_LOGIN_FAIL,
       payload: error.message,

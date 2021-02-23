@@ -1,2 +1,1 @@
-export const PROFILE_API = 'profile';
-
+export const PROFILE_API = 'profiles';

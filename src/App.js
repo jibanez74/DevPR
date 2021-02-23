@@ -11,6 +11,7 @@ import ConfirmScreen from './components/auth/ConfirmScreen';
 import ResetPassword from './components/auth/ResetPassword';
 import PrivateRoute from './components/auth/PrivateRoute';
 import Dashboard from './components/dashboard/Dashboard';
+import EditProfile from './components/profile/EditProfile';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
         <AppBar />
       </header>
       <main>
+        <PrivateRoute exact path="/edit-profile" component={EditProfile} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <Route path="/reset-password/:email" exact component={ResetPassword} />
         <Route exact path="/confirm/:email" component={ConfirmScreen} />

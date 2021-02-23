@@ -1,8 +1,8 @@
 {
     "paths": [
         {
-            "name": "/api/v1/profile",
-            "lambdaFunction": "profile",
+            "name": "/posts",
+            "lambdaFunction": "posts",
             "privacy": {
                 "protected": true,
                 "auth": [
@@ -16,14 +16,14 @@
                     "/GET"
                 ]
             },
-            "policyResourceName": "/api/v1/profile"
+            "policyResourceName": "/posts"
         }
     ],
-    "resourceName": "profile",
-    "apiName": "profile",
+    "resourceName": "posts",
+    "apiName": "posts",
     "functionArns": [
         {
-            "lambdaFunction": "profile"
+            "lambdaFunction": "posts"
         }
     ],
     "privacy": {
@@ -35,7 +35,7 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "profile",
+            "resourceName": "posts",
             "attributes": [
                 "Name",
                 "Arn"

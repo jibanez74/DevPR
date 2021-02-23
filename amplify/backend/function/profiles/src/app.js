@@ -5,61 +5,72 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
-const errorHandler = require('./helpers/error');
+const errorHandler = require('./middleware/error');
+const asyncHandler = require('./middleware/asyncHandler');
 const routes = require('./routes');
+const ErrorResponse = require('./middleware/ErrorResponse');
 
 // load env vars
-require('dotenv').config({ path: './config/config.env' });
+require('dotenv').config({
+  path: './config/config.env',
+});
 
 // connect to db
 require('./config/db')();
 
-// declare a new express app
+// init instance of express
 const app = express();
 
-// list of middleware
-app.use(awsServerlessExpressMiddleware.eventContext());
+/* MIDDLEWARE */
+
+// Body parser
 app.use(express.json());
+
+// lambda middleware
+app.use(awsServerlessExpressMiddleware.eventContext());
+
+// Sanitize data
 app.use(mongoSanitize());
+
+// Set security headers
 app.use(helmet());
+
+// Prevent XSS attacks
 app.use(xss());
 
+// Rate limiting
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 mins
   max: 100,
 });
 app.use(limiter);
 
+// Prevent http param pollution
+app.use(hpp());
+
 // Enable CORS for all methods
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', '*');
   next();
 });
 
-// set routes
-app.use('/api/v1/profile', routes);
+// mount router
+app.use('/profiles', routes);
 
-/*
-  middleware will handle api errors
-  must be placed after all routes
-*/
+// handle uncought errors
 app.use(errorHandler);
 
 // listen for connection
-app.listen(
-  process.env.PORT,
+app.listen(process.env.port, () =>
   console.log(
-    `Profile api is running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`
+    `Profiles api is now running in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`
   )
 );
 
-// handle global promise rejections
-process.on('unhandledRejection', (err, promise) => {
-  console.log(`Error: ${err.message}`.red);
-});
+// handle global promise rejection
+process.on('unhandledRejection', (err, promise) =>
+  console.log(`Error: ${err.message}`)
+);
 
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
 module.exports = app;

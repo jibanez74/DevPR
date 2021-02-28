@@ -1,19 +1,12 @@
-const express = require('express');
-const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware');
+const express = require('serverless-express/express');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const errorHandler = require('./middleware/error');
-const asyncHandler = require('./middleware/asyncHandler');
-const routes = require('./routes');
-const ErrorResponse = require('./middleware/ErrorResponse');
 
-// load env vars
-require('dotenv').config({
-  path: './config/config.env',
-});
+const profileRoutes = require('./routes/profileRoutes');
 
 // connect to db
 require('./config/db')();
@@ -25,9 +18,6 @@ const app = express();
 
 // Body parser
 app.use(express.json());
-
-// lambda middleware
-app.use(awsServerlessExpressMiddleware.eventContext());
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -56,7 +46,7 @@ app.use((req, res, next) => {
 });
 
 // mount router
-app.use('/profiles', routes);
+app.use('/profile', profileRoutes);
 
 // handle uncought errors
 app.use(errorHandler);

@@ -1,4 +1,3 @@
-import { API } from 'aws-amplify';
 import { PROFILE_API } from '../constants/apiConstants';
 import {
   PROFILE_FETCH_SUCCESS,
@@ -8,20 +7,21 @@ import {
   EDIT_PROFILE_FAIL,
 } from '../constants/profileConstants';
 
+// get a user's profile
 export const getProfile = sub => async dispatch => {
-  dispatch({
-    type: PROFILE_FETCH_REQUEST,
-  });
-
   try {
-    const { profiles } = await API.get(PROFILE_API, `/profiles`);
+    dispatch({
+      type: PROFILE_FETCH_REQUEST,
+    });
+
+    
 
     dispatch({
       type: PROFILE_FETCH_SUCCESS,
-      payload: profiles,
+      payload: response.profile,
     });
   } catch (error) {
-    alert(error.message);
+    console.error(error.message);
 
     dispatch({
       type: PROFILE_FETCH_FAIL,

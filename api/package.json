@@ -1,12 +1,12 @@
 {
-  "name": "api",
+  "name": "devpr-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "A nodejs api for the DevPR project",
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon server.js",
-    "start": "NODE_ENV=production node server.js"
+    "dev": "nodemon server.js",
+    "start": " node server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,12 +14,12 @@
   "dependencies": {
     "aws-sdk": "^2.856.0",
     "cognito-express": "^2.0.18",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.0.2",
     "express-rate-limit": "^5.2.6",
     "helmet": "^4.4.1",
     "hpp": "^0.2.3",
-    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.18",
     "redis": "^3.0.2",
     "uuid": "^8.3.2",

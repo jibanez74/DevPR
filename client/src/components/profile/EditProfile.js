@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 // import Loader from '../layouts/Loader';
 // import Message from '../layouts/Message';
 import PageHeader from '../layouts/PageHeader';
 import { locationOptions, statusOptions } from '../../utils/options';
 import { useDispatch, useSelector } from 'react-redux';
-import { editProfile } from '../../actions/profileActions';
+import axios from 'axios';
+import { API_URL } from '../../constants/apiConstants';
+import { PROFILE_FETCH_REQUEST } from '../../constants/profileConstants';
 
 function EditProfile({ history }) {
   const [status, setStatus] = useState('');
@@ -20,35 +22,54 @@ function EditProfile({ history }) {
   const [twitter, setTwitter] = useState('');
   const [instagram, setInstagram] = useState('');
   const [linkedin, setLinkedin] = useState('');
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
+  const token = useSelector(
+    state => state.userLogin.user.signInUserSession.accessToken.jwtToken
+  );
 
-  const editProfile = useSelector(state => state.editProfile);
-  const { success } = editProfile;
+  const saveHandler = async e => {
+    e.preventDefault();
 
-  useEffect(() => {
-    if (success) {
+    const profileData = {
+      status,
+      skills,
+      company,
+      website,
+      location,
+      bio,
+      githubUsername,
+      phone,
+      facebook,
+      twitter,
+      instagram,
+      linkedin,
+    };
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      const { data } = await axios.put(
+        `${API_URL}/profile`,
+        profileData,
+        config
+      );
+
+      dispatch({
+        type: PROFILE_FETCH_REQUEST,
+        payload: data.profile,
+      });
+
       history.push('/dashboard');
+    } catch (error) {
+      console.log(error);
     }
-  }, [success, history]);
-
-  const saveHandler = e => {
-    dispatch(
-      editProfile({
-        status,
-        skills,
-        company,
-        website,
-        location,
-        bio,
-        githubUsername,
-        phone,
-        facebook,
-        twitter,
-        instagram,
-        linkedin,
-      })
-    );
   };
 
   return (

@@ -16,34 +16,23 @@ export const getProfiles = asyncHandler(async (req, res, next) => {
   });
 });
 
-// get a profile by cognito sub
-export const getProfile = asyncHandler(async (req, res, next) => {
-  const profile = await Profile.findOne({
-    sub: req.params.sub,
-  });
-
-  if (!profile) {
-    return next(
-      new ErrorResponse(`No profile found with the sub ${req.params.sub}`, 404)
-    );
-  }
-
+// return a user's profile
+export const getProfile = (req, res) =>
   res.status(200).json({
     success: true,
-    profile,
+    profile: req.profile,
   });
-});
 
 // edit or create a profile
 export const editProfile = asyncHandler(async (req, res, next) => {
-  const { profileData } = req.body;
-
   // will update a profile if it exist, otherwise it will create it
   const profile = await Profile.findOneAndUpdate(
-    { sub: profileData.sub },
-    { $set: profileData },
+    { sub: req.sub },
+    { $set: req.body },
     { new: true, upsert: true, setDefaultsOnInsert: true }
   );
+
+  console.log(profile);
 
   res.status(201).json({
     success: true,

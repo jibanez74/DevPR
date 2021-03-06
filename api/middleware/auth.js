@@ -1,9 +1,8 @@
-import { validator, decodeToken } from '../config/cognito.js';
-import ErrorResponse from './error.js';
-import asyncHandler from './asyncHandler.js';
+import cognitoExpress from '../config/cognito.js';
+import ErrorResponse from './ErrorResponse.js';
 
 // middleware to validate access token, decode info and place the user's data into the req.user object
-const auth = asyncHandler(async (req, res, next) => {
+const auth = async (req, res, next) => {
   let token;
 
   if (
@@ -18,15 +17,19 @@ const auth = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('Not authorized', 401));
   }
 
-  await validator.validate(token);
+  try {
+    const { sub } = await cognitoExpress.validate(token);
 
-  req.user = await decodeToken(token, {
-    complete: true,
-  });
+    req.sub = sub;
 
-  console.log(req.user);
+    next();
+  } catch (error) {
+    if (process.env.NODE_ENV) {
+      console.error(`Cognito error \n ${error}`);
+    }
 
-  next();
-});
+    next(new ErrorResponse('Not authorized', 404));
+  }
+};
 
 export default auth;

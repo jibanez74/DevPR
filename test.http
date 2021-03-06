@@ -1,0 +1,7 @@
+PUT http://localhost:5000/api/v1/profile
+Content-Type: application/json
+
+{
+  "skills": "html, css, js",
+  "status": "developer"
+}

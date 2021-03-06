@@ -9,6 +9,7 @@ if (mode === 'development') {
 } else if (mode === 'production') {
   keys = prodKeys;
 } else {
+  process.env.NODE_ENV = 'development';
   keys = devKeys;
 }
 

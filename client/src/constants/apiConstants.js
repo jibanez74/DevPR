@@ -1,4 +1,4 @@
 export const API_URL =
   process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000/dev'
+    ? 'http://localhost:5000/api/v1'
     : 'http://localhost:3000/dev';

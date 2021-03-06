@@ -1,4 +1,5 @@
 import express from 'express';
+import * as cors from 'cors';
 import helmet from 'helmet';
 import connectDb from './config/db.js';
 import errorHandler from './middleware/error.js';
@@ -35,23 +36,19 @@ const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 mins
   max: 100,
 });
-app.use(limiter);
+// app.use(limiter);
 
 // Prevent http param pollution
 app.use(hpp());
 
-// Enable CORS for all methods
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', '*');
-  next();
-});
+// set cors options
+app.use(cors());
 
 // mount router
-// app.use('/profile', profileRoutes);
+app.use('/api/v1/profile', profileRoutes);
 
 // test route
-app.get('/', (req, res) => res.send('hello world'));
+// app.get('/', (req, res) => res.send('hello world'));
 
 // handle uncought errors
 app.use(errorHandler);

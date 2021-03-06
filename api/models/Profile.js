@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Experience from './Experience.js';
+import Education from './Education.js';
 
 const ProfileSchema = new mongoose.Schema({
   sub: {
@@ -70,6 +71,50 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     trim: true,
     maxLength: [100, 'exceeded character limit'],
+  },
+
+  phone: {
+    type: String,
+    maxLength: [20, 'Invalid phone number'],
+    minLength: [7, 'Invalid phone number'],
+  },
+
+  experience: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Experience',
+    },
+  ],
+
+  Education: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Education',
+    },
+  ],
+
+  facebook: {
+    type: String,
+  },
+
+  twitter: {
+    type: String,
+  },
+
+  linkedin: {
+    type: String,
+  },
+
+  instagram: {
+    type: String,
+  },
+
+  youtube: {
+    type: String,
+  },
+
+  twitch: {
+    type: String,
   },
 });
 

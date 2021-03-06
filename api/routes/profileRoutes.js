@@ -5,11 +5,12 @@ import {
   editProfile,
 } from '../controllers/profileControllers.js';
 import auth from '../middleware/auth.js';
+import loadProfile from '../middleware/loadProfile.js';
 
 const router = express.Router();
 
 router.route('/').get(getProfiles).put(auth, editProfile);
 
-router.route('/:sub').get(getProfile);
+router.get('/me', auth, loadProfile, getProfile);
 
 export default router;

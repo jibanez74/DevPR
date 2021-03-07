@@ -1,5 +1,5 @@
 import express from 'express';
-import * as cors from 'cors';
+import cors from 'cors';
 import helmet from 'helmet';
 import connectDb from './config/db.js';
 import errorHandler from './middleware/error.js';

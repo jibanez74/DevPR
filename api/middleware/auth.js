@@ -28,7 +28,7 @@ const auth = async (req, res, next) => {
       console.error(`Cognito error \n ${error}`);
     }
 
-    next(new ErrorResponse('Not authorized', 404));
+    next(new ErrorResponse('Not authorized', 401));
   }
 };
 

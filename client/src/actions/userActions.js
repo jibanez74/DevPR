@@ -21,6 +21,10 @@ export const classicLogin = (username, password) => async dispatch => {
       payload: user,
     });
   } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.error(error.message);
+    }
+
     dispatch({
       type: USER_LOGIN_FAIL,
       payload: error.message,
@@ -37,8 +41,29 @@ export const logout = () => async dispatch => {
   document.location.href = '/login';
 };
 
+// force logout
+export const forceLogout = (error, type) => dispatch => {
+  const message =
+    error.response && error.response.data.message
+      ? error.response.data.message
+      : error.message;
+
+  if (process.env.NODE_ENV === 'development') {
+    console.error(message);
+  }
+
+  if (message === 'Not authorized') {
+    dispatch(logout());
+  }
+
+  dispatch({
+    type,
+    payload: message,
+  });
+};
+
 // get current auth user
-export const getAuthUser = () => async dispatch => {
+export const loadUser = () => async dispatch => {
   try {
     dispatch({
       type: USER_LOGIN_REQUEST,
@@ -46,16 +71,11 @@ export const getAuthUser = () => async dispatch => {
 
     const user = await Auth.currentAuthenticatedUser();
 
-    console.log(user);
-
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: user,
     });
   } catch (error) {
-    dispatch({
-      type: USER_LOGIN_FAIL,
-      payload: error.message,
-    });
+    forceLogout(error, USER_LOGIN_FAIL);
   }
 };

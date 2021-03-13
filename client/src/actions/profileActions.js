@@ -1,12 +1,14 @@
 import axios from 'axios';
+import { forceLogout } from './userActions';
 import {
   PROFILE_FETCH_SUCCESS,
   PROFILE_FETCH_FAIL,
   PROFILE_FETCH_REQUEST,
 } from '../constants/profileConstants';
+import API_URL from '../constants/apiConstants';
 
-// get a user's profile
-export const getProfile = () => async (dispatch, getState) => {
+// wil get the profile for an authenticated user
+export const getAuthProfile = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: PROFILE_FETCH_REQUEST,
@@ -28,11 +30,6 @@ export const getProfile = () => async (dispatch, getState) => {
       payload: data.profile,
     });
   } catch (error) {
-    console.error(error.message);
-
-    dispatch({
-      type: PROFILE_FETCH_FAIL,
-      payload: error.message,
-    });
+    forceLogout(error, PROFILE_FETCH_FAIL);
   }
 };

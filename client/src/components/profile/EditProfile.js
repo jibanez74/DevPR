@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import isEmpty from '../../utils/isEmpty';
+import axios from 'axios';
+import API_URL from '../../constants/apiConstants';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 // import Loader from '../layouts/Loader';
 // import Message from '../layouts/Message';
 import PageHeader from '../layouts/PageHeader';
 import { locationOptions, statusOptions } from '../../utils/options';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { API_URL } from '../../constants/apiConstants';
-import { PROFILE_FETCH_REQUEST } from '../../constants/profileConstants';
+import { useSelector } from 'react-redux';
 
 function EditProfile({ history }) {
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [skills, setSkills] = useState('');
   const [company, setCompany] = useState('');
@@ -22,17 +24,44 @@ function EditProfile({ history }) {
   const [twitter, setTwitter] = useState('');
   const [instagram, setInstagram] = useState('');
   const [linkedin, setLinkedin] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const dispatch = useDispatch();
-  const token = useSelector(
-    state => state.userLogin.user.signInUserSession.accessToken.jwtToken
-  );
+  const [youtube, setYoutube] = useState(' ');
+  const [twitch, setTwitch] = useState('');
+
+  const userLogin = useSelector(state => state.userLogin);
+  const { user } = userLogin;
+
+  const fetchProfile = useSelector(state => state.fetchProfile);
+  const { profile } = fetchProfile;
+
+  useEffect(() => {
+    if (!isEmpty(profile)) {
+      if (!isEmpty(profile.skills) && Array.isArray(profile.skills)) {
+        setSkills(profile.skills.join(' ,'));
+      }
+
+      if (!isEmpty(profile.status)) setStatus(profile.status);
+      if (!isEmpty(profile.company)) setCompany(profile.company);
+      if (!isEmpty(profile.website)) setWebsite(profile.website);
+      if (!isEmpty(profile.location)) setLocation(profile.location);
+      if (!isEmpty(profile.bio)) setBio(profile.bio);
+      if (!isEmpty(profile.githubUsername))
+        setGithubUsername(profile.githubUsername);
+      if (!isEmpty(profile.phone)) setPhone(profile.phone);
+      if (!isEmpty(profile.facebook)) setFacebook(profile.facebook);
+      if (!isEmpty(profile.twitter)) setTwitter(profile.twitter);
+      if (!isEmpty(profile.instagram)) setInstagram(profile.instagram);
+      if (!isEmpty(profile.linkedin)) setLinkedin(profile.linkedin);
+      if (!isEmpty(profile.youtube)) setYoutube(profile.youtube);
+      if (!isEmpty(profile.twitch)) setTwitch(profile.Twitch);
+    }
+  }, [profile]);
 
   const saveHandler = async e => {
     e.preventDefault();
 
     const profileData = {
+      name: user.attributes.name,
+      email: user.attributes.email,
       status,
       skills,
       company,
@@ -55,20 +84,10 @@ function EditProfile({ history }) {
     };
 
     try {
-      const { data } = await axios.put(
-        `${API_URL}/profile`,
-        profileData,
-        config
-      );
-
-      dispatch({
-        type: PROFILE_FETCH_REQUEST,
-        payload: data.profile,
-      });
-
+      await axios.put(`${API_URL}/profile`, profileData, config);
       history.push('/dashboard');
     } catch (error) {
-      console.log(error);
+      conswole.log(error);
     }
   };
 
@@ -162,6 +181,7 @@ function EditProfile({ history }) {
                   <Form.Control
                     type="text"
                     maxLength="100"
+                    value={githubUsername}
                     onChange={e => setGithubUsername(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
@@ -208,6 +228,28 @@ function EditProfile({ history }) {
                     type="text"
                     value={linkedin}
                     onChange={e => setLinkedin(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId="youtube">
+                  <Form.Label>Youtube</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={youtube}
+                    onChange={e => setYoutube(e.target.value)}
+                    minLength="2"
+                    maxLength="500"
+                  ></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId="twitch">
+                  <Form.Label>Twitch</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={twitch}
+                    onChange={e => setTwitch(e.target.value)}
+                    minLength="2"
+                    maxLength="500"
                   ></Form.Control>
                 </Form.Group>
 

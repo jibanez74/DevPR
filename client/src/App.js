@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getAuthUser } from './actions/userActions';
+import { loadUser } from './actions/userActions';
 
 import AppBar from './components/layouts/AppBar';
 import Landing from './components/landing/Landing';
@@ -17,7 +17,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAuthUser());
+    dispatch(loadUser());
   });
 
   return (

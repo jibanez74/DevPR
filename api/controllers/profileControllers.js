@@ -32,8 +32,6 @@ export const editProfile = asyncHandler(async (req, res, next) => {
     { new: true, upsert: true, setDefaultsOnInsert: true }
   );
 
-  console.log(profile);
-
   res.status(201).json({
     success: true,
     profile,

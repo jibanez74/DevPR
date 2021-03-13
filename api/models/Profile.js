@@ -26,6 +26,7 @@ const ProfileSchema = new mongoose.Schema({
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       'Invalid email address',
     ],
+    required: [true, 'Email is required'],
   },
 
   company: {

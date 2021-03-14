@@ -16,7 +16,7 @@ function Dashboard() {
 
   useEffect(() => {
     dispatch(getAuthProfile());
-  }, [dispatch]);
+  }, []);
 
   return loading ? (
     <Loader />

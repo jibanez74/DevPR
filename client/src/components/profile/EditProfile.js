@@ -76,6 +76,8 @@ function EditProfile({ history }) {
       linkedin,
     };
 
+    const token = user.signInUserSession.accessToken.jwtToken;
+
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +89,7 @@ function EditProfile({ history }) {
       await axios.put(`${API_URL}/profile`, profileData, config);
       history.push('/dashboard');
     } catch (error) {
-      conswole.log(error);
+      console.log(error);
     }
   };
 

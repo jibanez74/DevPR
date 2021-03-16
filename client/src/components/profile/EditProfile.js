@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import isEmpty from '../../utils/isEmpty';
-import axios from 'axios';
-import API_URL from '../../constants/apiConstants';
+import { editProfile } from '../../actions/profileActions';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-// import Loader from '../layouts/Loader';
-// import Message from '../layouts/Message';
+import Loader from '../layouts/Loader';
+import Message from '../layouts/Message';
 import PageHeader from '../layouts/PageHeader';
 import { locationOptions, statusOptions } from '../../utils/options';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function EditProfile({ history }) {
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [skills, setSkills] = useState('');
   const [company, setCompany] = useState('');
@@ -26,6 +25,8 @@ function EditProfile({ history }) {
   const [linkedin, setLinkedin] = useState('');
   const [youtube, setYoutube] = useState(' ');
   const [twitch, setTwitch] = useState('');
+
+  const dispatch = useDispatch();
 
   const userLogin = useSelector(state => state.userLogin);
   const { user } = userLogin;
@@ -54,7 +55,7 @@ function EditProfile({ history }) {
       if (!isEmpty(profile.youtube)) setYoutube(profile.youtube);
       if (!isEmpty(profile.twitch)) setTwitch(profile.Twitch);
     }
-  }, [profile]);
+  }, []);
 
   const saveHandler = async e => {
     e.preventDefault();
@@ -76,21 +77,7 @@ function EditProfile({ history }) {
       linkedin,
     };
 
-    const token = user.signInUserSession.accessToken.jwtToken;
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
-      },
-    };
-
-    try {
-      await axios.put(`${API_URL}/profile`, profileData, config);
-      history.push('/dashboard');
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(editProfile(profileData, history));
   };
 
   return (
